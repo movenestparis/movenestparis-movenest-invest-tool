@@ -11,12 +11,15 @@
 </head>
 <body {% if language == 'ar' %}dir="rtl"{% endif %}>
     <div class="container-fluid">
+        <!-- Header -->
         <header class="text-center py-4">
             <div class="logo-container">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="MoveNest Paris" class="logo">
             </div>
             <h1 class="main-title">{{ translations.title }}</h1>
             <p class="subtitle">{{ translations.subtitle }}</p>
+            
+            <!-- Language Toggle -->
             <div class="language-toggle">
                 <a href="{{ url_for('toggle_language') }}" class="btn btn-outline-primary btn-sm">
                     <i class="fas fa-globe"></i> {{ translations.toggle_language }}
@@ -25,6 +28,7 @@
         </header>
 
         <div class="row">
+            <!-- Input Form -->
             <div class="col-lg-6">
                 <div class="card form-card">
                     <div class="card-header">
@@ -36,123 +40,161 @@
                             <i class="fas fa-exclamation-triangle"></i> {{ error }}
                         </div>
                         {% endif %}
+
                         <form method="POST" action="{{ url_for('calculate') }}">
+                            <!-- Property Details -->
                             <div class="section-header">
                                 <h5><i class="fas fa-home"></i> {{ translations.property_details }}</h5>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ translations.property_price }}</label>
-                                    <input type="number" class="form-control" name="property_price" value="{{ form_data.get('property_price', '') }}" required>
+                                    <label class="form-label" title="Prix d'acquisition de la propriété">{{ translations.property_price }}</label>
+                                    <input type="number" class="form-control" name="property_price" 
+                                           value="{{ form_data.get('property_price', '') }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ translations.notary_rate }}</label>
-                                    <input type="number" class="form-control" name="notary_rate" value="{{ form_data.get('notary_rate', '7.5') }}" step="0.1" required>
+                                    <label class="form-label" title="Frais de notaire en pourcentage du prix d'achat">{{ translations.notary_rate }}</label>
+                                    <input type="number" class="form-control" name="notary_rate" 
+                                           value="{{ form_data.get('notary_rate', '7.5') }}" step="0.1" required>
                                 </div>
                             </div>
+                            
                             <div class="mb-3">
-                                <label class="form-label">{{ translations.renovation_budget }}</label>
-                                <input type="number" class="form-control" name="renovation_budget" value="{{ form_data.get('renovation_budget', '0') }}" required>
+                                <label class="form-label" title="Budget prévu pour les travaux de rénovation">{{ translations.renovation_budget }}</label>
+                                <input type="number" class="form-control" name="renovation_budget" 
+                                       value="{{ form_data.get('renovation_budget', '0') }}" required>
                             </div>
 
+                            <!-- Rental Information -->
                             <div class="section-header">
                                 <h5><i class="fas fa-key"></i> {{ translations.rental_info }}</h5>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ translations.monthly_rent }}</label>
-                                    <input type="number" class="form-control" name="monthly_rent" value="{{ form_data.get('monthly_rent', '') }}" required>
+                                    <label class="form-label" title="Loyer mensuel hors charges">{{ translations.monthly_rent }}</label>
+                                    <input type="number" class="form-control" name="monthly_rent" 
+                                           value="{{ form_data.get('monthly_rent', '') }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">{{ translations.vacancy_months }}</label>
-                                    <input type="number" class="form-control" name="vacancy_months" value="{{ form_data.get('vacancy_months', '1') }}" step="0.1" required>
+                                    <label class="form-label" title="Nombre de mois de vacance locative par an">{{ translations.vacancy_months }}</label>
+                                    <input type="number" class="form-control" name="vacancy_months" 
+                                           value="{{ form_data.get('vacancy_months', '1') }}" step="0.1" required>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">{{ translations.annual_rent_increase }}</label>
-                                <input type="number" class="form-control" name="annual_rent_increase" value="{{ form_data.get('annual_rent_increase', '0') }}" step="0.1" min="0" max="20">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" title="Pourcentage d'augmentation annuelle du loyer">{{ translations.annual_rent_increase }}</label>
+                                    <input type="number" class="form-control" name="annual_rent_increase" 
+                                           value="{{ form_data.get('annual_rent_increase', '0') }}" step="0.1" min="0" max="20">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" title="Pourcentage d'augmentation annuelle des charges">{{ translations.annual_charges_increase }}</label>
+                                    <input type="number" class="form-control" name="annual_charges_increase" 
+                                           value="{{ form_data.get('annual_charges_increase', '0') }}" step="0.1" min="0" max="20">
+                                </div>
                             </div>
 
+                            <!-- Expenses -->
                             <div class="section-header">
                                 <h5><i class="fas fa-euro-sign"></i> {{ translations.expenses }}</h5>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">{{ translations.annual_charges }}</label>
-                                    <input type="number" class="form-control" name="annual_charges" value="{{ form_data.get('annual_charges', '0') }}" required>
+                                    <input type="number" class="form-control" name="annual_charges" 
+                                           value="{{ form_data.get('annual_charges', '0') }}" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">{{ translations.taxe_fonciere }}</label>
-                                    <input type="number" class="form-control" name="taxe_fonciere" value="{{ form_data.get('taxe_fonciere', '0') }}" required>
+                                    <input type="number" class="form-control" name="taxe_fonciere" 
+                                           value="{{ form_data.get('taxe_fonciere', '0') }}" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">{{ translations.annual_capex }}</label>
-                                    <input type="number" class="form-control" name="annual_capex" value="{{ form_data.get('annual_capex', '0') }}" required>
+                                    <input type="number" class="form-control" name="annual_capex" 
+                                           value="{{ form_data.get('annual_capex', '0') }}" required>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">{{ translations.annual_charges_increase }}</label>
-                                <input type="number" class="form-control" name="annual_charges_increase" value="{{ form_data.get('annual_charges_increase', '0') }}" step="0.1" min="0" max="20">
-                            </div>
 
+                            <!-- Investment Parameters -->
                             <div class="section-header">
                                 <h5><i class="fas fa-chart-line"></i> {{ translations.investment_params }}</h5>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ translations.resale_value }}</label>
-                                    <input type="number" class="form-control" name="resale_value" value="{{ form_data.get('resale_value', '') }}" required>
+                                    <input type="number" class="form-control" name="resale_value" 
+                                           value="{{ form_data.get('resale_value', '') }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ translations.discount_rate }}</label>
-                                    <input type="number" class="form-control" name="discount_rate" value="{{ form_data.get('discount_rate', '4') }}" step="0.1" required>
+                                    <input type="number" class="form-control" name="discount_rate" 
+                                           value="{{ form_data.get('discount_rate', '4') }}" step="0.1" required>
                                 </div>
                             </div>
 
+                            <!-- Loan Information -->
                             <div class="section-header">
                                 <h5><i class="fas fa-university"></i> {{ translations.loan_info }}</h5>
                             </div>
+                            
                             <div class="mb-3">
                                 <label class="form-label">{{ translations.use_loan }}</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="use_loan" value="yes" id="loan_yes" {% if form_data.get('use_loan') == 'yes' %}checked{% endif %}>
+                                    <input class="form-check-input" type="radio" name="use_loan" value="yes" 
+                                           id="loan_yes" {% if form_data.get('use_loan') == 'yes' %}checked{% endif %}>
                                     <label class="form-check-label" for="loan_yes">{{ translations.yes }}</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="use_loan" value="no" id="loan_no" {% if form_data.get('use_loan') != 'yes' %}checked{% endif %}>
+                                    <input class="form-check-input" type="radio" name="use_loan" value="no" 
+                                           id="loan_no" {% if form_data.get('use_loan') != 'yes' %}checked{% endif %}>
                                     <label class="form-check-label" for="loan_no">{{ translations.no }}</label>
                                 </div>
                             </div>
+                            
                             <div id="loan-fields" style="display: none;">
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">{{ translations.loan_amount }}</label>
-                                        <input type="number" class="form-control" name="loan_amount" value="{{ form_data.get('loan_amount', '') }}">
+                                        <input type="number" class="form-control" name="loan_amount" 
+                                               value="{{ form_data.get('loan_amount', '') }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">{{ translations.interest_rate }}</label>
-                                        <input type="number" class="form-control" name="interest_rate" value="{{ form_data.get('interest_rate', '3.5') }}" step="0.1">
+                                        <input type="number" class="form-control" name="interest_rate" 
+                                               value="{{ form_data.get('interest_rate', '3.5') }}" step="0.1">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">{{ translations.loan_duration }}</label>
-                                        <input type="number" class="form-control" name="loan_duration" value="{{ form_data.get('loan_duration', '20') }}">
+                                        <input type="number" class="form-control" name="loan_duration" 
+                                               value="{{ form_data.get('loan_duration', '20') }}">
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Scenario Selection -->
                             <div class="scenario-section mb-4">
                                 <h6 class="text-muted mb-3">{{ translations.scenario_analysis }}</h6>
                                 <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="scenario" id="base" value="base" {% if not scenario_type or scenario_type == 'base' %}checked{% endif %}>
+                                    <input type="radio" class="btn-check" name="scenario" id="base" value="base" 
+                                           {% if not scenario_type or scenario_type == 'base' %}checked{% endif %}>
                                     <label class="btn btn-outline-primary" for="base">{{ translations.base_scenario }}</label>
-
-                                    <input type="radio" class="btn-check" name="scenario" id="best" value="best" {% if scenario_type == 'best' %}checked{% endif %}>
+                                    
+                                    <input type="radio" class="btn-check" name="scenario" id="best" value="best"
+                                           {% if scenario_type == 'best' %}checked{% endif %}>
                                     <label class="btn btn-outline-success" for="best">{{ translations.best_case }}</label>
-
-                                    <input type="radio" class="btn-check" name="scenario" id="worst" value="worst" {% if scenario_type == 'worst' %}checked{% endif %}>
+                                    
+                                    <input type="radio" class="btn-check" name="scenario" id="worst" value="worst"
+                                           {% if scenario_type == 'worst' %}checked{% endif %}>
                                     <label class="btn btn-outline-danger" for="worst">{{ translations.worst_case }}</label>
                                 </div>
                             </div>
+
                             <button type="submit" class="btn btn-primary btn-lg w-100">
                                 <i class="fas fa-calculator"></i> {{ translations.calculate }}
                             </button>
@@ -160,12 +202,221 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Results -->
             <div class="col-lg-6">
-                {% include 'results.html' %}
+                {% if show_results %}
+                <div class="card results-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-bar"></i> {{ translations.results }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Export PDF Button -->
+                        <div class="export-section mb-3">
+                            <a href="{{ url_for('export_pdf') }}" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-file-pdf"></i> {{ translations.export_pdf }}
+                            </a>
+                        </div>
+
+                        <!-- Key Metrics -->
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <label title="Frais de notaire calculés">{{ translations.notary_fees }}</label>
+                                <div class="metric-value">{{ "{:,.0f}".format(results.notary_fees) }} €</div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Investissement total initial requis">{{ translations.total_investment }}</label>
+                                <div class="metric-value primary">{{ "{:,.0f}".format(results.total_investment) }} €</div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Revenus locatifs bruts annuels">{{ translations.annual_gross_income }}</label>
+                                <div class="metric-value">{{ "{:,.0f}".format(results.annual_gross_income) }} €</div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Revenus nets après charges et financement">{{ translations.annual_net_income }}</label>
+                                <div class="metric-value success">{{ "{:,.0f}".format(results.annual_net_income) }} €</div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Revenus nets annuels ÷ investissement total">{{ translations.net_yield }}</label>
+                                <div class="metric-value {% if results.net_yield >= 3 %}success{% else %}warning{% endif %}">
+                                    {{ "{:.2f}".format(results.net_yield) }}%
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Revenus bruts ÷ valeur de la propriété">{{ translations.cap_rate }}</label>
+                                <div class="metric-value">{{ "{:.2f}".format(results.cap_rate) }}%</div>
+                            </div>
+                            <div class="metric-item">
+                                <label title="Flux de trésorerie mensuel net">{{ translations.monthly_cash_flow }}</label>
+                                <div class="metric-value {% if results.monthly_cash_flow >= 0 %}success{% else %}danger{% endif %}">
+                                    {{ "{:,.0f}".format(results.monthly_cash_flow) }} €
+                                </div>
+                            </div>
+                            {% if results.monthly_loan_payment > 0 %}
+                            <div class="metric-item">
+                                <label title="Mensualité de prêt">{{ translations.monthly_loan_payment }}</label>
+                                <div class="metric-value">{{ "{:,.0f}".format(results.monthly_loan_payment) }} €</div>
+                            </div>
+                            {% endif %}
+                            {% if results.dscr > 0 %}
+                            <div class="metric-item">
+                                <label title="Ratio de couverture du service de la dette">{{ translations.dscr }}</label>
+                                <div class="metric-value {% if results.dscr >= 1.2 %}success{% elif results.dscr >= 1 %}warning{% else %}danger{% endif %}">
+                                    {{ "{:.2f}".format(results.dscr) }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="metric-item">
+                                <label title="Loyer minimum pour atteindre une VAN nulle">{{ translations.breakeven_rent }}</label>
+                                <div class="metric-value">{{ "{:,.0f}".format(results.breakeven_rent) }} €</div>
+                            </div>
+                        </div>
+
+                        <!-- NPV Chart -->
+                        <div class="chart-section mb-4">
+                            <h5>{{ translations.npv_chart }}</h5>
+                            <canvas id="npvChart" width="400" height="200"></canvas>
+                        </div>
+
+                        <!-- NPV and IRR -->
+                        <div class="advanced-metrics">
+                            <h5>{{ translations.financial_interpretation }}</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="metric-item">
+                                        <label title="Valeur actuelle nette sur 3 ans">{{ translations.npv_3 }}</label>
+                                        <div class="metric-value {% if results.npv_3 >= 0 %}success{% else %}danger{% endif %}">
+                                            {{ "{:,.0f}".format(results.npv_3) }} €
+                                        </div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <label title="Valeur actuelle nette sur 5 ans">{{ translations.npv_5 }}</label>
+                                        <div class="metric-value {% if results.npv_5 >= 0 %}success{% else %}danger{% endif %}">
+                                            {{ "{:,.0f}".format(results.npv_5) }} €
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="metric-item">
+                                        <label title="Valeur actuelle nette sur 10 ans">{{ translations.npv_10 }}</label>
+                                        <div class="metric-value {% if results.npv_10 >= 0 %}success{% else %}danger{% endif %}">
+                                            {{ "{:,.0f}".format(results.npv_10) }} €
+                                        </div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <label title="Taux de rendement interne sur 10 ans">{{ translations.irr }}</label>
+                                        <div class="metric-value {% if results.irr > 4 %}success{% else %}warning{% endif %}">
+                                            {{ "{:.2f}".format(results.irr) }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CFA Analysis -->
+                        <div class="cfa-analysis">
+                            <h5><i class="fas fa-user-tie"></i> {{ translations.cfa_analysis }}</h5>
+                            <div class="interpretations">
+                                {% for symbol, interpretation in interpretations %}
+                                <div class="interpretation-item">
+                                    <span class="symbol">{{ symbol }}</span>
+                                    <span class="text">{{ interpretation }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card placeholder-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">{{ translations.results }}</h5>
+                        <p class="text-muted">Remplissez le formulaire et cliquez sur "Calculer" pour voir les résultats</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    {% if show_results and results.npv_over_time %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // NPV Chart
+            const ctx = document.getElementById('npvChart');
+            if (ctx) {
+                const npvData = {{ results.npv_over_time | tojson }};
+                console.log('NPV Data:', npvData); // Debug log
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: npvData.map(item => `Année ${item.year}`),
+                        datasets: [{
+                            label: 'VAN (€)',
+                            data: npvData.map(item => item.npv),
+                            borderColor: '#2e5e4e',
+                            backgroundColor: 'rgba(46, 94, 78, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#2e5e4e',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'VAN: ' + context.parsed.y.toLocaleString('fr-FR') + ' €';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('fr-FR') + ' €';
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(0,0,0,0.1)'
+                                }
+                            }
+                        },
+                        elements: {
+                            point: {
+                                hoverRadius: 8
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    {% endif %}
 </body>
 </html>
