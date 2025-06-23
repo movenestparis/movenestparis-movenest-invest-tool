@@ -12,18 +12,9 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
 
-# Dummy credentials (to be set in Render Environment Variables)
+# Credentials from environment variables
 USERNAME = os.environ.get('ADMIN_USERNAME', 'movenest')
 PASSWORD = os.environ.get('ADMIN_PASSWORD', 'paris2025')
-
-
-def parse_float(value, default=0.0):
-    """Parse a string to float, replacing comma with dot for decimals."""
-    try:
-        return float(str(value).replace(',', '.'))
-    except (ValueError, TypeError):
-        return default
-
 
 # -------------------------
 # ROUTES
@@ -75,22 +66,22 @@ def calculate():
 
     try:
         calculator = RealEstateCalculator(
-            property_price=parse_float(form_data.get('property_price', 0)),
-            notary_rate=parse_float(form_data.get('notary_rate', 0)) / 100,
-            renovation_budget=parse_float(form_data.get('renovation_budget', 0)),
-            monthly_rent=parse_float(form_data.get('monthly_rent', 0)),
-            vacancy_months=parse_float(form_data.get('vacancy_months', 0)),
-            annual_charges=parse_float(form_data.get('annual_charges', 0)),
-            taxe_fonciere=parse_float(form_data.get('taxe_fonciere', 0)),
-            annual_capex=parse_float(form_data.get('annual_capex', 0)),
-            resale_value=parse_float(form_data.get('resale_value', 0)),
-            discount_rate=parse_float(form_data.get('discount_rate', 0)) / 100,
+            property_price=float(form_data.get('property_price', 0)),
+            notary_rate=float(form_data.get('notary_rate', 0)) / 100,
+            renovation_budget=float(form_data.get('renovation_budget', 0)),
+            monthly_rent=float(form_data.get('monthly_rent', 0)),
+            vacancy_months=float(form_data.get('vacancy_months', 0)),
+            annual_charges=float(form_data.get('annual_charges', 0)),
+            taxe_fonciere=float(form_data.get('taxe_fonciere', 0)),
+            annual_capex=float(form_data.get('annual_capex', 0)),
+            resale_value=float(form_data.get('resale_value', 0)),
+            discount_rate=float(form_data.get('discount_rate', 0)) / 100,
             use_loan=form_data.get('use_loan') == 'yes',
-            loan_amount=parse_float(form_data.get('loan_amount', 0)),
-            interest_rate=parse_float(form_data.get('interest_rate', 0)) / 100,
+            loan_amount=float(form_data.get('loan_amount', 0)),
+            interest_rate=float(form_data.get('interest_rate', 0)) / 100,
             loan_duration=int(form_data.get('loan_duration', 0)),
-            annual_rent_increase=parse_float(form_data.get('annual_rent_increase', 0)) / 100,
-            annual_charges_increase=parse_float(form_data.get('annual_charges_increase', 0)) / 100
+            annual_rent_increase=float(form_data.get('annual_rent_increase', 0)) / 100,
+            annual_charges_increase=float(form_data.get('annual_charges_increase', 0)) / 100
         )
 
         if scenario_type in ['best', 'worst']:
@@ -139,22 +130,22 @@ def export_pdf():
 
     try:
         calculator = RealEstateCalculator(
-            property_price=parse_float(form_data.get('property_price', 0)),
-            notary_rate=parse_float(form_data.get('notary_rate', 0)) / 100,
-            renovation_budget=parse_float(form_data.get('renovation_budget', 0)),
-            monthly_rent=parse_float(form_data.get('monthly_rent', 0)),
-            vacancy_months=parse_float(form_data.get('vacancy_months', 0)),
-            annual_charges=parse_float(form_data.get('annual_charges', 0)),
-            taxe_fonciere=parse_float(form_data.get('taxe_fonciere', 0)),
-            annual_capex=parse_float(form_data.get('annual_capex', 0)),
-            resale_value=parse_float(form_data.get('resale_value', 0)),
-            discount_rate=parse_float(form_data.get('discount_rate', 0)) / 100,
+            property_price=float(form_data.get('property_price', 0)),
+            notary_rate=float(form_data.get('notary_rate', 0)) / 100,
+            renovation_budget=float(form_data.get('renovation_budget', 0)),
+            monthly_rent=float(form_data.get('monthly_rent', 0)),
+            vacancy_months=float(form_data.get('vacancy_months', 0)),
+            annual_charges=float(form_data.get('annual_charges', 0)),
+            taxe_fonciere=float(form_data.get('taxe_fonciere', 0)),
+            annual_capex=float(form_data.get('annual_capex', 0)),
+            resale_value=float(form_data.get('resale_value', 0)),
+            discount_rate=float(form_data.get('discount_rate', 0)) / 100,
             use_loan=form_data.get('use_loan') == 'yes',
-            loan_amount=parse_float(form_data.get('loan_amount', 0)),
-            interest_rate=parse_float(form_data.get('interest_rate', 0)) / 100,
+            loan_amount=float(form_data.get('loan_amount', 0)),
+            interest_rate=float(form_data.get('interest_rate', 0)) / 100,
             loan_duration=int(form_data.get('loan_duration', 0)),
-            annual_rent_increase=parse_float(form_data.get('annual_rent_increase', 0)) / 100,
-            annual_charges_increase=parse_float(form_data.get('annual_charges_increase', 0)) / 100
+            annual_rent_increase=float(form_data.get('annual_rent_increase', 0)) / 100,
+            annual_charges_increase=float(form_data.get('annual_charges_increase', 0)) / 100
         )
 
         results = calculator.calculate_all_metrics()
